@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <title>Workstation 1.0</title>
+  <style>
+    body {
+      font-family: "Kanit", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background-image 3s ease-in-out;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 80%;
+      max-width: 1200px;
+    
+    }
+    .component {
+      background: #faededb3;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .task-list input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .clock {
+      font-family: 'Courier New', monospace;
+      font-size: 3em;
+      text-align: center;
+      padding: 20px 0;
+      background: #333;
+      color: #fff;
+      border-radius: 8px;
+    }
+    iframe {
+      width: 100%;
+      height: 315px;
+      border-radius: 8px;
+      border: none;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .task-item label {
+      margin: 0;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="component task-list">
+      <h2>Task List</h2>
+      <p>Access from Google Calendar API</p>
+      {% for task_str in tasks %}
+        <div class="task-item">
+          <input type="checkbox" id="task-{{ loop.index }}">
+          <label for="task-{{ loop.index }}">{{ task_str }}</label>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="component clock-component">
+      <h2>Time</h2>
+      <p>UTC Clock API (user choice)</p>
+      <div class="clock" id="clock">{{ time }}</div>
+    </div>
+    <div class="component">
+      <h2>Youtube</h2>
+      <p>Lo-fi music playing from Youtube API</p>
+      <div class="youtubePlayer">
+        <iframe src="{{ youtube_player }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+      
+    function changeBackground() {
+      var imageUrl = "https://picsum.photos/1920/1080?random=" + new Date().getTime();
+      document.body.style.backgroundImage = "url('" + imageUrl + "')";
+  }
+     setInterval(changeBackground, 5000);
+     changeBackground();
+    
+  </script>
+</body>
+</html>
